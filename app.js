@@ -51,34 +51,55 @@ function change_color(colors) {
 function render_pallet() {
     rendered_pallets_index = rendered_pallets.length;
 
+
+
     if (rendered_pallets_index % 5 == 0 && rendered_pallets_index != 0) {
         generate_pallets();
     }
     rendered_pallets.push(pallets[rendered_pallets_index]);
     change_color(pallets[rendered_pallets_index]);
 
-    console.log(rendered_pallets_index);
 }
 
+
+
 function render_previous() {
+
+    $(".next").css("opacity", "1");
     if (rendered_pallets_index <= 0) {
-        $("undo").css("opacity", "0.5");
         return;
     }
     else {
         rendered_pallets_index -= 1;
+        if (rendered_pallets_index === 0) {
+            $(".undo").css("opacity", "0.5");
+        }
         change_color(pallets[rendered_pallets_index]);
     }
-
-    console.log(rendered_pallets_index);
 }
 
 
+function render_next() {
+
+    $(".undo").css("opacity", "1");
+    if (rendered_pallets_index >= rendered_pallets.length - 1) {
+        return;
+    }
+    else {
+        rendered_pallets_index += 1;
+        if (rendered_pallets_index === rendered_pallets.length - 1) {
+            $(".next").css("opacity", "0.5");
+        }
+        change_color(pallets[rendered_pallets_index]);
+    }
+}
 
 
 
 
 $(".generate").click(() => {
+    $(".undo").css("opacity", "1");
+    $(".next").css("opacity", "0.5");
     render_pallet();
 })
 
@@ -86,12 +107,22 @@ $(".undo").click(() => {
     render_previous();
 })
 
+$(".next").click(() => {
+    render_next();
+})
+
+
 document.addEventListener("keydown", (e) => {
+    if (e.key === "y" && e.ctrlKey) {
+        render_next();
+    }
     if (e.ctrlKey && e.key === "z") {
         render_previous();
     }
 
     if (e.key === " ") {
+        $(".undo").css("opacity", "1");
+        $(".next").css("opacity", "0.5");
         render_pallet();
     }
 })
@@ -114,5 +145,8 @@ document.addEventListener("keydown", (e) => {
 
 document.addEventListener("DOMContentLoaded", () => {
     generate_pallets();
+
+    $(".undo").css("opacity", "0.5");
+    $(".next").css("opacity", "0.5");
 })
 
