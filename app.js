@@ -1,20 +1,27 @@
-var pallets = [];
+let pallets = [];
+let rendered_pallets = [];
+let rendered_pallets_index = -1;
 
-async function api_call(colors) {
+async function api_call(locked_colors) {
     const url = "http://colormind.io/api/";
     const data = {
         model : "default",
-        input : colors
-    }
+        input : locked_colors
+    };
     
     const http = new XMLHttpRequest();
     http.onreadystatechange = function() {
         if(http.readyState == 4 && http.status == 200) {
             const result = JSON.parse(http.responseText).result;  
-            pallets.push(result)
-            change_color(result)
-            console.log(result[0])
-            
+
+            if (pallets.includes(result)) {
+                api_call(colors);
+            }
+            else{
+                pallets.push(result);
+
+                if (pallets.length === 1) {render_pallet()}       
+            }
         }
     }
     
@@ -23,14 +30,60 @@ async function api_call(colors) {
 }
 
 
+async function generate_pallets() {
+    for (let i = 0; i < 10; i++) {
+        api_call(["N","N","N","N","N"]);
+    }
+}
+
+
+
 function change_color(colors) {
     for(let i = 0; i < 5; i++) {
         $(":root").css("--primary-color-" + (i + 1), `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`);
     }
 }
-for (let i = 0; i < 5; i++) {
-    api_call([[44,43,44],[90,83,82],"N","N","N"])
-}
-console.log("hello")
 
+
+
+
+
+function render_pallet() {
+    rendered_pallets_index += 1;
+
+    if (rendered_pallets_index % 5 == 0 && rendered_pallets_index != 0) {
+        generate_pallets();
+    }
+
+    change_color(pallets[rendered_pallets_index]);
+}
+
+
+
+
+
+
+$("button").click(() => {
+    render_pallet();
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    generate_pallets();
+})
 
