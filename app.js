@@ -67,6 +67,12 @@ $("button").click(() => {
     render_pallet();
 })
 
+document.addEventListener("keydown", (e) => {
+    if (e.key === " ") {
+        render_pallet();
+    }
+})
+
 
 
 
