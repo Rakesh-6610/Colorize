@@ -49,13 +49,28 @@ function change_color(colors) {
 
 
 function render_pallet() {
-    rendered_pallets_index += 1;
+    rendered_pallets_index = rendered_pallets.length;
 
     if (rendered_pallets_index % 5 == 0 && rendered_pallets_index != 0) {
         generate_pallets();
     }
-
+    rendered_pallets.push(pallets[rendered_pallets_index]);
     change_color(pallets[rendered_pallets_index]);
+
+    console.log(rendered_pallets_index);
+}
+
+function render_previous() {
+    if (rendered_pallets_index <= 0) {
+        $("undo").css("opacity", "0.5");
+        return;
+    }
+    else {
+        rendered_pallets_index -= 1;
+        change_color(pallets[rendered_pallets_index]);
+    }
+
+    console.log(rendered_pallets_index);
 }
 
 
@@ -63,11 +78,19 @@ function render_pallet() {
 
 
 
-$("button").click(() => {
+$(".generate").click(() => {
     render_pallet();
 })
 
+$(".undo").click(() => {
+    render_previous();
+})
+
 document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key === "z") {
+        render_previous();
+    }
+
     if (e.key === " ") {
         render_pallet();
     }
