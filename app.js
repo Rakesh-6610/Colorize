@@ -1,12 +1,15 @@
 let pallets = [];
 let rendered_pallets = [];
 let rendered_pallets_index = -1;
+let locked_colors = ["N","N","N","N","N"];
+let locked_colors_indexes = [];
+let is_locked_color = false
 
-async function api_call(locked_colors) {
+async function api_call(colors) {
     const url = "http://colormind.io/api/";
     const data = {
         model : "default",
-        input : locked_colors
+        input : colors
     };
     
     const http = new XMLHttpRequest();
@@ -14,14 +17,10 @@ async function api_call(locked_colors) {
         if(http.readyState == 4 && http.status == 200) {
             const result = JSON.parse(http.responseText).result;  
 
-            if (pallets.includes(result)) {
-                api_call(colors);
-            }
-            else{
-                pallets.push(result);
+            pallets.push(result);
 
-                if (pallets.length === 1) {render_pallet()}       
-            }
+            if (pallets.length === 1) {render_pallet()}       
+            
         }
     }
     
@@ -32,7 +31,7 @@ async function api_call(locked_colors) {
 
 async function generate_pallets() {
     for (let i = 0; i < 10; i++) {
-        api_call(["N","N","N","N","N"]);
+        api_call(locked_colors);
     }
 }
 
@@ -40,7 +39,12 @@ async function generate_pallets() {
 
 function change_color(colors) {
     for(let i = 0; i < 5; i++) {
-        $(":root").css("--primary-color-" + (i + 1), `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`);
+        if (locked_colors_indexes.includes(String(i))) {
+            continue;
+        }
+        else {
+            $(":root").css("--primary-color-" + (i + 1), `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`);
+        }
     }
 }
 
@@ -109,6 +113,19 @@ $(".undo").click(() => {
 
 $(".next").click(() => {
     render_next();
+})
+$(".color").click((e) => {
+    is_locked_color = true;
+    let index = String(e.target.getAttribute("index_value"));
+    if (locked_colors_indexes.includes(index)) {
+        locked_colors_indexes.pop(index);
+        locked_colors[Number(index)] = "N";
+    }
+    else {
+        locked_colors_indexes.push(index);
+        locked_colors[Number(index)] = rendered_pallets[rendered_pallets_index][Number(index)];
+    }
+    
 })
 
 
