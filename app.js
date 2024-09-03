@@ -76,7 +76,7 @@ function render_previous() {
     else {
         rendered_pallets_index -= 1;
         if (rendered_pallets_index === 0) {
-            $(".undo").css("opacity", "0.5");
+            $(".prev").css("opacity", "0.5");
         }
         change_color(pallets[rendered_pallets_index]);
     }
@@ -85,7 +85,7 @@ function render_previous() {
 
 function render_next() {
 
-    $(".undo").css("opacity", "1");
+    $(".prev").css("opacity", "1");
     if (rendered_pallets_index >= rendered_pallets.length - 1) {
         return;
     }
@@ -102,12 +102,12 @@ function render_next() {
 
 
 $(".generate").click(() => {
-    $(".undo").css("opacity", "1");
+    $(".prev").css("opacity", "1");
     $(".next").css("opacity", "0.5");
     render_pallet();
 })
 
-$(".undo").click(() => {
+$(".prev").click(() => {
     render_previous();
 })
 
@@ -138,7 +138,7 @@ document.addEventListener("keydown", (e) => {
     }
 
     if (e.key === " ") {
-        $(".undo").css("opacity", "1");
+        $(".prev").css("opacity", "1");
         $(".next").css("opacity", "0.5");
         render_pallet();
     }
@@ -163,7 +163,7 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
     generate_pallets();
 
-    $(".undo").css("opacity", "0.5");
+    $(".prev").css("opacity", "0.5");
     $(".next").css("opacity", "0.5");
 })
 
