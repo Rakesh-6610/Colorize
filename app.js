@@ -43,6 +43,7 @@ function change_color(colors) {
             continue;
         }
         else {
+            write_code(i, colors[i]);
             $(":root").css("--primary-color-" + (i + 1), `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`);
         }
     }
@@ -99,6 +100,36 @@ function render_next() {
 }
 
 
+function write_code(index, color_list) {
+    const red = Number(color_list[0]);
+    const green = Number(color_list[1]);
+    const blue = Number(color_list[2]);
+    const hex = rgbToHex(red, green, blue);
+    const is_bright =  (Math.round(Number(red)*0.2126) + Math.round(Number(green)*0.7152) + Math.round(Number(blue)*0.0722)) >= 128;
+
+    const ele_text_block = document.querySelectorAll(".hex_value_main")[index];
+    ele_text_block.innerText = hex.toUpperCase();
+    if (is_bright) {
+        ele_text_block.style.color = "rgba(0, 0, 0, 0.78)";
+    }
+    else {
+        ele_text_block.style.color = "rgba(255, 255, 255, 0.78)";
+    }
+
+}
+
+
+function rgbToHex(r, g, b) {
+    const toHex = (color) => {
+        const hex = color.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    };
+
+    return "#" + toHex(r) + toHex(g) + toHex(b);
+}
+
+
+
 
 
 $(".generate").click(() => {
@@ -114,19 +145,42 @@ $(".prev").click(() => {
 $(".next").click(() => {
     render_next();
 })
-$(".color").click((e) => {
+
+
+
+function lock_color_btn(ind) {
     is_locked_color = true;
-    let index = String(e.target.getAttribute("index_value"));
+    let index = String(ind);
+    let ele_locked = document.querySelectorAll(".color div")[Number(index)];
+    console.log(ele_locked);
     if (locked_colors_indexes.includes(index)) {
-        locked_colors_indexes.pop(index);
-        locked_colors[Number(index)] = "N";
+    locked_colors_indexes.pop(index);
+    locked_colors[Number(index)] = "N";
+    ele_locked.classList.remove("locked");
+    ele_locked.classList.add("unlocked");
     }
     else {
-        locked_colors_indexes.push(index);
-        locked_colors[Number(index)] = rendered_pallets[rendered_pallets_index][Number(index)];
+    locked_colors_indexes.push(index);
+    locked_colors[Number(index)] = rendered_pallets[rendered_pallets_index][Number(index)];
+    ele_locked.classList.remove("unlocked");
+    ele_locked.classList.add("locked");
+    console.log(ele_locked.classList);
     }
-    
-})
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 document.addEventListener("keydown", (e) => {
