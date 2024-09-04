@@ -43,9 +43,18 @@ function change_color(colors) {
             continue;
         }
         else {
-            write_code(i, colors[i]);
+            write_code(i, colors[i], 1);
             $(":root").css("--primary-color-" + (i + 1), `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`);
         }
+
+        document.querySelectorAll(".color-circle")[i].style.backgroundColor = `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`;
+        write_code(i, colors[i], 2);
+
+        let scroll_ele = document.querySelectorAll(`.color-${i+1}`);
+        scroll_ele[0].value = Number(colors[i][0]) * 1.5;
+        scroll_ele[1].value = Number(colors[i][1]) * 1.5;
+        scroll_ele[2].value = Number(colors[i][2]) * 1.5;
+        
     }
 }
 
@@ -100,20 +109,25 @@ function render_next() {
 }
 
 
-function write_code(index, color_list) {
+function write_code(index, color_list, mode) {
     const red = Number(color_list[0]);
     const green = Number(color_list[1]);
     const blue = Number(color_list[2]);
     const hex = rgbToHex(red, green, blue);
     const is_bright =  (Math.round(Number(red)*0.2126) + Math.round(Number(green)*0.7152) + Math.round(Number(blue)*0.0722)) >= 128;
-
-    const ele_text_block = document.querySelectorAll(".hex_value_main")[index];
-    ele_text_block.innerText = hex.toUpperCase();
-    if (is_bright) {
-        ele_text_block.style.color = "rgba(0, 0, 0, 0.78)";
+    if (mode === 1) {
+        const ele_text_block = document.querySelectorAll(".hex_value_main")[index];
+        ele_text_block.innerText = hex.toUpperCase();
+        if (is_bright) {
+            ele_text_block.style.color = "rgba(0, 0, 0, 0.78)";
+        }
+        else {
+            ele_text_block.style.color = "rgba(255, 255, 255, 0.78)";
+        }
     }
     else {
-        ele_text_block.style.color = "rgba(255, 255, 255, 0.78)";
+        const ele_text_block = document.querySelectorAll(".hex_value")[index];
+        ele_text_block.innerText = hex.toUpperCase();
     }
 
 }
@@ -154,17 +168,16 @@ function lock_color_btn(ind) {
     let ele_locked = document.querySelectorAll(".color div")[Number(index)];
     console.log(ele_locked);
     if (locked_colors_indexes.includes(index)) {
-    locked_colors_indexes.pop(index);
-    locked_colors[Number(index)] = "N";
-    ele_locked.classList.remove("locked");
-    ele_locked.classList.add("unlocked");
+        locked_colors_indexes.pop(index);
+        locked_colors[Number(index)] = "N";
+        ele_locked.classList.remove("locked");
+        ele_locked.classList.add("unlocked");
     }
     else {
-    locked_colors_indexes.push(index);
-    locked_colors[Number(index)] = rendered_pallets[rendered_pallets_index][Number(index)];
-    ele_locked.classList.remove("unlocked");
-    ele_locked.classList.add("locked");
-    console.log(ele_locked.classList);
+        locked_colors_indexes.push(index);
+        locked_colors[Number(index)] = rendered_pallets[rendered_pallets_index][Number(index)];
+        ele_locked.classList.remove("unlocked");
+        ele_locked.classList.add("locked");
     }
 }
 
@@ -191,7 +204,7 @@ document.addEventListener("keydown", (e) => {
         render_previous();
     }
 
-    if (e.key === " ") {
+    if (e.key === "w") {
         $(".prev").css("opacity", "1");
         $(".next").css("opacity", "0.5");
         render_pallet();
