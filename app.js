@@ -4,6 +4,7 @@ let rendered_pallets_index = -1;
 let locked_colors = ["N","N","N","N","N"];
 let locked_colors_indexes = [];
 let is_locked_color = false
+let slider_colors = [];
 
 async function api_call(colors) {
     const url = "http://colormind.io/api/";
@@ -50,12 +51,17 @@ function change_color(colors) {
         document.querySelectorAll(".color-circle")[i].style.backgroundColor = `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`;
         write_code(i, colors[i], 2);
 
+        document.querySelectorAll(".rgb-color-div")[i].style.backgroundColor = `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`;
         let scroll_ele = document.querySelectorAll(`.color-${i+1}`);
         scroll_ele[0].value = Number(colors[i][0]) * 1.5;
         scroll_ele[1].value = Number(colors[i][1]) * 1.5;
         scroll_ele[2].value = Number(colors[i][2]) * 1.5;
-        
+
+
     }
+    slider_colors = colors;
+
+    console.log(slider_colors);
 }
 
 
