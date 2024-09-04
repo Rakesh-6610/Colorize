@@ -1,0 +1,13 @@
+# Ignore macOS files
+.DS_Store
+
+# Ignore IntelliJ IDEA files
+.idea/
+*.iml
+
+# Ignore compiled files
+*.class
+*.jar
+
+# Ignore temporary files
+.vscode
