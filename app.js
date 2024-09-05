@@ -39,6 +39,8 @@ async function generate_pallets() {
 
 
 function change_color(colors) {
+    slider_colors = colors;
+
     for(let i = 0; i < 5; i++) {
         if (locked_colors_indexes.includes(String(i))) {
             continue;
@@ -51,21 +53,35 @@ function change_color(colors) {
         document.querySelectorAll(".color-circle")[i].style.backgroundColor = `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`;
         write_code(i, colors[i], 2);
 
-        document.querySelectorAll(".rgb-color-div")[i].style.backgroundColor = `rgb(${colors[i][0]}, ${colors[i][1]}, ${colors[i][2]})`;
-        let scroll_ele = document.querySelectorAll(`.color-${i+1}`);
-        scroll_ele[0].value = Number(colors[i][0]) * 1.5;
-        scroll_ele[1].value = Number(colors[i][1]) * 1.5;
-        scroll_ele[2].value = Number(colors[i][2]) * 1.5;
+        change_scroll(i, true);
 
 
     }
-    slider_colors = colors;
 
-    console.log(slider_colors);
+    // console.log(slider_colors);
 }
 
 
 
+function change_scroll(index, init) {
+    if (init) {
+        document.querySelectorAll(".rgb-color-div")[index].style.backgroundColor = `rgb(${slider_colors[index][0]}, ${slider_colors[index][1]}, ${slider_colors[index][2]})`;
+        let scroll_ele = document.querySelectorAll(`.color-${index+1}`);
+        scroll_ele[0].value = (Number(slider_colors[index][0]));
+        scroll_ele[1].value = (Number(slider_colors[index][1]));
+        scroll_ele[2].value = (Number(slider_colors[index][2]));
+
+
+        let color_1 = `linear-gradient(90deg, #FF0000 ${ ((Number(slider_colors[index][0])) / 256) * 100}%, rgba(217, 217, 217, 0.33) ${ ((Number(slider_colors[index][0])) / 256) * 100}%)`;
+        let color_2 = `linear-gradient(90deg, #00FF00 ${ ((Number(slider_colors[index][1])) / 256) * 100}%, rgba(217, 217, 217, 0.33) ${ ((Number(slider_colors[index][1])) / 256) * 100}%)`;
+        let color_3 = `linear-gradient(90deg, #0000FF ${ ((Number(slider_colors[index][2])) / 256) * 100}%, rgba(217, 217, 217, 0.33) ${ ((Number(slider_colors[index][2])) / 256) * 100}%)`;
+
+
+        scroll_ele[0].style.background = color_1;
+        scroll_ele[1].style.background = color_2;
+        scroll_ele[2].style.background = color_3;
+    }
+}
 
 
 function render_pallet() {
