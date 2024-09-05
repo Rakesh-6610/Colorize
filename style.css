@@ -320,7 +320,7 @@ main {
     justify-content: space-between;
     align-items: center;
     position: relative;
-    gap: 20px;
+    gap: 40px;
 }
 
 .rgb-color-div {
@@ -394,4 +394,18 @@ input[type="range"]::-moz-range-progress {
 }
 .blue::-webkit-slider-thumb {
     background-color: #0000FF;
+}
+
+
+.rgb-color > div:has(.rgb-hex-value) {
+    width: 175px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.48);
+    background-color: rgba(228, 228, 228, 0.31);
+    font-size: 32px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
