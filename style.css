@@ -431,3 +431,51 @@ input[type="range"]::-moz-range-progress {
     font-weight: 700;
     text-transform: uppercase;
 }
+
+
+
+
+
+
+
+/* ---------------------------------- footer part starts here ---------------------------------- */
+
+footer {
+    width: 100vw;
+    height: 100%;
+    padding: 50px 10px;
+    display: flex;
+    gap: 40px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+footer section {
+    width: 100%;
+    max-width: 1500px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.about {
+    max-width: 430px;
+}
+
+.about p:not(.copyright) {
+    /* Colorize is a place where you can generate many beautiful and stylish color palettes and also customize them accordingly. */
+
+
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+
+    color: rgba(0, 0, 0, 0.56);
+    margin-top: 34px;
+
+
+}
